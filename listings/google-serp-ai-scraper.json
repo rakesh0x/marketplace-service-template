@@ -1,0 +1,51 @@
+{
+  "id": "google-serp-ai-scraper",
+  "name": "Google SERP + AI Search Scraper",
+  "description": "Scrape Google SERPs with AI Overview text using real mobile IPs. Returns titles, URLs, snippets, positions.",
+  "longDescription": "Scrape Google search results including AI Overviews through real 4G/5G mobile proxies. Bypasses datacenter IP blocks and CAPTCHAs. Returns structured JSON with titles, URLs, snippets, position ranking, and extracted AI Overview content. Supports multiple result pages, country/language targeting, and optional browser-rendered AI overview extraction for JavaScript-heavy content.",
+  "endpoint": "https://your-deployed-url.com",
+  "docsUrl": "https://github.com/bolivian-peru/marketplace-service-template",
+  "pricing": {
+    "model": "per-request",
+    "amount": "0.02",
+    "currency": "USDC",
+    "networks": [
+      {
+        "network": "solana",
+        "chainId": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+        "recipient": "YOUR_SOLANA_WALLET_ADDRESS",
+        "asset": "USDC",
+        "assetAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+      },
+      {
+        "network": "base",
+        "chainId": "eip155:8453",
+        "recipient": "YOUR_BASE_WALLET_ADDRESS",
+        "asset": "USDC",
+        "assetAddress": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+      }
+    ]
+  },
+  "category": "scraper",
+  "tags": ["google", "serp", "search", "ai-overview", "seo", "scraping", "mobile-proxy"],
+  "features": [
+    "Real 4G/5G mobile IPs (bypass datacenter blocks)",
+    "Structured JSON output (title, url, snippet, position)",
+    "AI Overview extraction (HTML or browser-rendered)",
+    "Multi-page support (up to 5 pages per request)",
+    "Country/language targeting (gl, hl, lr parameters)",
+    "x402 USDC payments (Solana or Base)"
+  ],
+  "owner": {
+    "name": "Your Name",
+    "github": "your-github-username",
+    "twitter": "your-twitter",
+    "telegram": "your-telegram"
+  },
+  "status": "pending",
+  "featured": false,
+  "addedAt": "2026-02-06",
+  "x402": {
+    "discoveryUrl": "https://your-deployed-url.com/api/run"
+  }
+}
