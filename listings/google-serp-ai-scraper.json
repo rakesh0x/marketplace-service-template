@@ -1,13 +1,13 @@
 {
   "id": "google-serp-ai-scraper",
   "name": "Google SERP + AI Search Scraper",
-  "description": "Scrape Google SERPs with AI Overview text using real mobile IPs. Returns titles, URLs, snippets, positions.",
-  "longDescription": "Scrape Google search results including AI Overviews through real 4G/5G mobile proxies. Bypasses datacenter IP blocks and CAPTCHAs. Returns structured JSON with titles, URLs, snippets, position ranking, and extracted AI Overview content. Supports multiple result pages, country/language targeting, and optional browser-rendered AI overview extraction for JavaScript-heavy content.",
+  "description": "Scrape Google SERPs with AI Overview, Featured Snippets, and People Also Ask using browser rendering and real mobile IPs.",
+  "longDescription": "Production-ready Google SERP scraper using real browser rendering (not regex) to reliably extract search results. Bypasses datacenter IP blocks via 4G/5G mobile proxies. Returns structured JSON with organic results, AI Overviews, Featured Snippets, People Also Ask questions, and Related Searches. Handles CAPTCHAs and consent screens with automatic retry.",
   "endpoint": "https://your-deployed-url.com",
   "docsUrl": "https://github.com/bolivian-peru/marketplace-service-template",
   "pricing": {
     "model": "per-request",
-    "amount": "0.02",
+    "amount": "0.01",
     "currency": "USDC",
     "networks": [
       {
@@ -27,18 +27,32 @@
     ]
   },
   "category": "scraper",
-  "tags": ["google", "serp", "search", "ai-overview", "seo", "scraping", "mobile-proxy"],
+  "tags": [
+    "google",
+    "serp",
+    "search",
+    "ai-overview",
+    "featured-snippet",
+    "paa",
+    "seo",
+    "scraping",
+    "mobile-proxy",
+    "browser"
+  ],
   "features": [
+    "Real browser rendering (not fragile regex parsing)",
     "Real 4G/5G mobile IPs (bypass datacenter blocks)",
-    "Structured JSON output (title, url, snippet, position)",
-    "AI Overview extraction (HTML or browser-rendered)",
-    "Multi-page support (up to 5 pages per request)",
-    "Country/language targeting (gl, hl, lr parameters)",
+    "AI Overview extraction with sources",
+    "Featured Snippet extraction",
+    "People Also Ask questions",
+    "Related Searches",
+    "CAPTCHA and consent screen handling with retry",
+    "Country/language targeting (gl, hl parameters)",
     "x402 USDC payments (Solana or Base)"
   ],
   "owner": {
     "name": "Your Name",
-    "github": "your-github-username",
+    "github": "rakesh0x",
     "twitter": "your-twitter",
     "telegram": "your-telegram"
   },
