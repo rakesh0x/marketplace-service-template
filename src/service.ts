@@ -121,7 +121,7 @@ serviceRouter.get('/run', async (c) => {
   // Parse page token for pagination
   const startIndex = pageToken ? parseInt(pageToken) || 0 : 0;
 
-  // ── Step 3: Execute scraping ──
+  // ── Step 4: Execute scraping ──
   try {
     const proxy = getProxy();
     const result = await scrapeGoogleMaps(query, location, limit, startIndex);

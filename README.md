@@ -6,6 +6,8 @@ Fork this repo → edit one file → deploy → start earning.
 
 You provide the idea. We provide 145+ mobile devices across 6 countries, x402 payment rails, and the marketplace to find customers.
 
+> **Reference implementation included:** This repo ships with a working **Google Maps Lead Generator** (`src/service.ts` + `src/scrapers/`) built by [@aliraza556](https://github.com/aliraza556). Use it as-is or replace with your own service logic.
+
 ## 💰 The Economics
 
 You're arbitraging infrastructure. Buy proxy bandwidth wholesale, sell API calls retail.
@@ -76,7 +78,7 @@ curl http://localhost:3000/health
 curl http://localhost:3000/
 # → Service discovery JSON (AI agents read this)
 
-curl http://localhost:3000/api/run?url=https://example.com
+curl "http://localhost:3000/api/run?query=plumbers&location=Austin+TX"
 # → 402 with payment instructions (this is correct!)
 ```
 
@@ -124,6 +126,9 @@ Supports **Solana** (~400ms, ~$0.0001 gas) and **Base** (~2s, ~$0.01 gas).
 | File | Purpose | Edit? |
 |------|---------|-------|
 | `src/service.ts` | Your service logic, pricing, description | **✏️ YES** |
+| `src/scrapers/maps-scraper.ts` | Google Maps scraping logic (reference impl) | Replace with yours |
+| `src/types/index.ts` | TypeScript interfaces | Replace with yours |
+| `src/utils/helpers.ts` | Extraction helper functions | Replace with yours |
 | `src/index.ts` | Server, CORS, rate limiting, discovery | No |
 | `src/payment.ts` | On-chain USDC verification (Solana + Base) | No |
 | `src/proxy.ts` | Proxy credentials + fetch with retry | No |
@@ -269,23 +274,38 @@ Your service needs customers. The [Proxies.sx Marketplace](https://agents.proxie
 
 ## Bounty Board
 
-**$200 bounties** for builders. Each bounty pays **$200 in $SX token** upon approval.
+Build a service, earn $SX tokens. See [agents.proxies.sx/marketplace/#bounties](https://agents.proxies.sx/marketplace/#bounties) for the full board.
 
-| # | Service | Reward | Required | Claim | Status |
+### Wave 1 — $200 Bounties
+
+| # | Service | Reward | Required | Issue | Status |
 |---|---------|--------|----------|-------|--------|
-| 1 | ~~YouTube Transcript Scraper~~ | $200 in $SX token | proxy + x402 | — | **DONE** |
-| 2 | **Google SERP + AI Search Scraper** | $200 in $SX token | proxy + browser (Identity Bundles) + x402 | [#1](https://github.com/bolivian-peru/marketplace-service-template/issues/1) | OPEN |
-| 3 | **Gmail Account Creator** | $200 in $SX token | proxy + browser (Identity Bundles) + x402 | [#2](https://github.com/bolivian-peru/marketplace-service-template/issues/2) | OPEN |
-| 4 | **Instagram Account Creator** | $200 in $SX token | proxy + browser (Identity Bundles) + x402 | [#3](https://github.com/bolivian-peru/marketplace-service-template/issues/3) | OPEN |
+| 1 | ~~YouTube Transcript Scraper~~ | $200 | proxy + x402 | — | **DONE** |
+| 2 | **Google SERP + AI Search Scraper** | $200 | proxy + browser + x402 | [#1](https://github.com/bolivian-peru/marketplace-service-template/issues/1) | OPEN |
+| 3 | **Gmail Account Creator + Warmer** | $200 | proxy + browser + x402 | [#2](https://github.com/bolivian-peru/marketplace-service-template/issues/2) | IN REVIEW |
+| 4 | **Instagram Account Creator + Warmer** | $200 | proxy + browser + x402 | [#3](https://github.com/bolivian-peru/marketplace-service-template/issues/3) | IN REVIEW |
+
+### Wave 2 — $50 Bounties
+
+| # | Service | Reward | Issue | Status |
+|---|---------|--------|-------|--------|
+| 7 | Mobile SERP Tracker | $50 | [#7](https://github.com/bolivian-peru/marketplace-service-template/issues/7) | OPEN |
+| 8 | E-Commerce Price & Stock Monitor | $50 | [#8](https://github.com/bolivian-peru/marketplace-service-template/issues/8) | OPEN |
+| 9 | ~~Google Maps Lead Generator~~ | $50 | [#9](https://github.com/bolivian-peru/marketplace-service-template/issues/9) | **DONE** ([PR #17](https://github.com/bolivian-peru/marketplace-service-template/pull/17)) |
+| 10 | Social Profile Intelligence API | $50 | [#10](https://github.com/bolivian-peru/marketplace-service-template/issues/10) | OPEN |
+| 11 | Ad Spy & Creative Intelligence | $50 | [#11](https://github.com/bolivian-peru/marketplace-service-template/issues/11) | OPEN |
+| 12 | Travel Price Tracker API | $50 | [#12](https://github.com/bolivian-peru/marketplace-service-template/issues/12) | OPEN |
+| 13 | Ad Verification & Brand Safety | $50 | [#13](https://github.com/bolivian-peru/marketplace-service-template/issues/13) | OPEN |
+| 14 | Review & Reputation Monitor | $50 | [#14](https://github.com/bolivian-peru/marketplace-service-template/issues/14) | OPEN |
+| 15 | Real Estate Listing Aggregator | $50 | [#15](https://github.com/bolivian-peru/marketplace-service-template/issues/15) | OPEN |
+| 16 | Job Market Intelligence API | $50 | [#16](https://github.com/bolivian-peru/marketplace-service-template/issues/16) | OPEN |
 
 **Rules:**
 1. Must use Proxies.sx mobile proxies
 2. Must gate with x402 USDC payments
 3. Must be a working, deployable service
 4. Claim by commenting on the issue linked above
-5. $200 in $SX token paid after Maya reviews and approves
-
-**See the full bounty board:** [agents.proxies.sx/marketplace/#bounties](https://agents.proxies.sx/marketplace/#bounties)
+5. $SX tokens paid after Maya reviews and approves
 
 ## Links
 
