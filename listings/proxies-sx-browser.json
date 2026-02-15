@@ -105,5 +105,7 @@
       "POST /v1/sessions/:id/profile to save identity bundle"
     ]
   },
-  "version": "2.0.0"
+  "version": "2.0.0",
+  "lastVerified": "2026-02-15T00:00:00Z",
+  "healthEndpoint": "https://browser.proxies.sx/health"
 }
