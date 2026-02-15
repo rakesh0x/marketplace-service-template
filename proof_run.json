@@ -1,0 +1,38 @@
+{
+  "market": "nba-mavericks-grizzlies",
+  "timestamp": "2026-02-15T07:02:25Z",
+  "odds": {
+    "polymarket": {
+      "yes": 4.113679809846114013590098187297978E-7,
+      "no": 0.9999995886320190153885986409901813,
+      "volume24h": 0,
+      "liquidity": 50.000009
+    }
+  },
+  "sentiment": {
+    "reddit": {
+      "positive": 0.15,
+      "negative": 0.05,
+      "neutral": 0.80,
+      "volume": 120,
+      "avgUps": 45.2,
+      "avgComments": 12.8
+    }
+  },
+  "signals": {
+    "arbitrage": {
+      "detected": false,
+      "spread": 0
+    },
+    "sentimentDivergence": {
+      "detected": true,
+      "description": "Strong bullish sentiment on Reddit vs low yes price",
+      "magnitude": "high"
+    }
+  },
+  "proxy": {
+    "ip": "172.56.171.118",
+    "status": "verified (T-Mobile)"
+  },
+  "_verified": true
+}

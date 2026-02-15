@@ -1,6 +1,6 @@
 /**
- * Marketplace Service — Server Entry Point
- * ─────────────────────────────────────────
+ * Marketplace Service — Server Entry Point (Multi-Service)
+ * ────────────────────────────────────────────────────────
  * Mounts: /api/*
  */
 
@@ -63,20 +63,22 @@ setInterval(() => {
 
 app.get('/health', (c) => c.json({
   status: 'healthy',
-  service: process.env.SERVICE_NAME || 'job-market-intelligence',
-  version: '1.0.0',
+  version: '1.2.0',
+  services: ['job-market-intelligence', 'prediction-market-aggregator'],
   timestamp: new Date().toISOString(),
 }));
 
 app.get('/', (c) => c.json({
-  name: process.env.SERVICE_NAME || 'job-market-intelligence',
-  description: process.env.SERVICE_DESCRIPTION || 'Job Market Intelligence API (Indeed/LinkedIn)',
-  version: '1.0.0',
+  name: 'Multi-Service Hub (Proxies.sx Marketplace)',
+  description: 'Aggregated intelligence services powered by mobile proxies.',
+  version: '1.2.0',
   endpoints: [
-    { method: 'GET', path: '/api/jobs', description: 'Get job listings (Indeed/LinkedIn) with salary + date + proxy metadata' },
+    { method: 'GET', path: '/api/jobs', description: 'Job Market Intelligence (Indeed/LinkedIn)' },
+    { method: 'GET', path: '/api/run', description: 'Prediction Market Signal Aggregator (Polymarket/Kalshi)' },
   ],
   pricing: {
-    amount: process.env.PRICE_USDC || '0.005',
+    jobs: '0.005 USDC',
+    prediction: '0.05 USDC',
     currency: 'USDC',
     networks: [
       {
@@ -97,17 +99,16 @@ app.get('/', (c) => c.json({
       },
     ],
   },
-  infrastructure: 'Proxies.sx mobile proxies (real 4G/5G IPs)',
+  infrastructure: 'Proxies.sx mobile proxies',
   links: {
     marketplace: 'https://agents.proxies.sx/marketplace/',
-    skillFile: 'https://agents.proxies.sx/marketplace/skill.md',
     github: 'https://github.com/bolivian-peru/marketplace-service-template',
   },
 }));
 
 app.route('/api', serviceRouter);
 
-app.notFound((c) => c.json({ error: 'Not found', endpoints: ['/', '/health', '/api/jobs'] }, 404));
+app.notFound((c) => c.json({ error: 'Not found', endpoints: ['/', '/health', '/api/jobs', '/api/run'] }, 404));
 
 app.onError((err, c) => {
   console.error(`[ERROR] ${err.message}`);
