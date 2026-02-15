@@ -2,7 +2,7 @@
   "id": "proxies-sx-mobile",
   "name": "Proxies.sx Mobile Proxy",
   "description": "Real 4G/5G mobile proxies across 6 countries. HTTP + SOCKS5. Auto-rotation. x402 payments.",
-  "longDescription": "145+ physical devices on real carrier networks (AT&T, T-Mobile, Vodafone, Orange, etc). Not datacenter. Not residential VPN. Actual phones on actual cell towers. Websites see you as a real mobile user. Bypass Cloudflare, Akamai, PerimeterX, DataDome. Pay per GB with USDC on Solana (~400ms) or Base (~2s). No accounts, no API keys — your agent pays and gets credentials instantly.",
+  "longDescription": "155+ physical devices on real carrier networks (AT&T, T-Mobile, Vodafone, Orange, etc). Not datacenter. Not residential VPN. Actual phones on actual cell towers. Websites see you as a real mobile user. Bypass Cloudflare, Akamai, PerimeterX, DataDome. Pool Gateway (gw.proxies.sx) provides instant access via HTTP and SOCKS5 with session-based sticky IPs. Pay per GB with USDC on Solana (~400ms) or Base (~2s). No accounts, no API keys — your agent pays and gets credentials instantly.",
   "endpoint": "https://api.proxies.sx/v1/x402",
   "docsUrl": "https://agents.proxies.sx/skill.md",
   "pricing": {
@@ -26,7 +26,7 @@
       {
         "network": "solana",
         "chainId": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
-        "recipient": "6qJVQ61ygwjuB7DK94ccrAcxgiQkc2tbbWeNCr3FT2HY",
+        "recipient": "6eUdVwsPArTxwVqEARYGCh4S2qwW2zCs7jSEDRpxydnv",
         "asset": "USDC",
         "assetAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
         "settlementTime": "~400ms",
@@ -35,7 +35,7 @@
       {
         "network": "base",
         "chainId": "eip155:8453",
-        "recipient": "0xC6C3a87363D5b37d9510202015369086e25558f1",
+        "recipient": "0xF8cD900794245fc36CBE65be9afc23CDF5103042",
         "asset": "USDC",
         "assetAddress": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "settlementTime": "~2s",
@@ -44,20 +44,21 @@
     ]
   },
   "category": "proxy",
-  "tags": ["mobile", "4g", "5g", "rotating", "residential", "anti-detect", "scraping", "automation"],
+  "tags": ["mobile", "4g", "5g", "rotating", "residential", "anti-detect", "scraping", "automation", "socks5", "pool-gateway"],
   "inventory": {
-    "totalDevices": 146,
+    "totalDevices": 155,
     "countries": {
-      "US": { "devices": 34, "carriers": ["AT&T", "T-Mobile", "Verizon"] },
-      "PL": { "devices": 27, "carriers": ["Orange", "Play", "Plus"] },
+      "US": { "devices": 42, "carriers": ["AT&T", "T-Mobile", "Verizon"] },
+      "DE": { "devices": 26, "carriers": ["Telekom", "Vodafone", "O2"] },
       "ES": { "devices": 24, "carriers": ["Movistar", "Vodafone", "Orange"] },
-      "DE": { "devices": 23, "carriers": ["Telekom", "Vodafone", "O2"] },
       "GB": { "devices": 22, "carriers": ["EE", "Vodafone", "Three"] },
-      "FR": { "devices": 17, "carriers": ["Orange", "SFR", "Bouygues"] }
+      "PL": { "devices": 21, "carriers": ["Orange", "Play", "Plus"] },
+      "FR": { "devices": 18, "carriers": ["Orange", "SFR", "Bouygues"] }
     }
   },
   "features": [
     "HTTP + SOCKS5 protocols",
+    "Pool Gateway (gw.proxies.sx) — instant shared access on port 7000 (HTTP) and 7001 (SOCKS5)",
     "Auto IP rotation (configurable interval)",
     "City-level targeting",
     "Carrier targeting",
@@ -75,7 +76,7 @@
   "status": "active",
   "featured": true,
   "addedAt": "2024-01-01",
-  "updatedAt": "2026-02-05",
+  "updatedAt": "2026-02-15",
   "x402": {
     "discoveryUrl": "https://api.proxies.sx/v1/x402/proxy",
     "wellKnown": "https://agents.proxies.sx/.well-known/x402.json",
@@ -84,7 +85,9 @@
       "countries": "GET /v1/x402/countries",
       "pricing": "GET /v1/x402/pricing",
       "calculate": "GET /v1/x402/calculate?tier=shared&duration=3600&traffic=1",
-      "purchase": "GET /v1/x402/proxy?country=US&traffic=1"
+      "purchase": "GET /v1/x402/proxy?country=US&traffic=1",
+      "poolGatewayHttp": "gw.proxies.sx:7000 (HTTP CONNECT)",
+      "poolGatewaySocks5": "gw.proxies.sx:7001 (SOCKS5)"
     }
   },
   "mcp": {
