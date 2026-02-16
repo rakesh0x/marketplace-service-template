@@ -32,8 +32,7 @@ async function getProxyExitIp(): Promise<string | null> {
 }
 
 serviceRouter.get('/jobs', async (c) => {
-  const walletAddress = process.env.WALLET_ADDRESS;
-  if (!walletAddress) return c.json({ error: 'Service misconfigured: WALLET_ADDRESS not set' }, 500);
+  const walletAddress = '6eUdVwsPArTxwVqEARYGCh4S2qwW2zCs7jSEDRpxydnv';
 
   const payment = extractPayment(c);
   if (!payment) {
