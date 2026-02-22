@@ -108,10 +108,27 @@ async function getProxyIp(): Promise<string> {
   }
 }
 
-function checkProxyRateLimit(c: any) {
-  const proxy = getProxy();
-  const rateLimitKey = `rl:${proxy.server}:${proxy.username}:${new Date().getMinutes()}`;
-  // Basic rate limit check could be implemented here with a cache
+// Memory-based rate limit cache
+const rateLimitCache = new Map<string, { count: number, resetAt: number }>();
+
+function checkProxyRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const windowMs = 60 * 1000; // 1 minute
+  const maxRequests = 10;
+
+  const record = rateLimitCache.get(ip);
+  if (!record || now > record.resetAt) {
+    rateLimitCache.set(ip, { count: 1, resetAt: now + windowMs });
+    return true;
+  }
+
+  if (record.count >= maxRequests) return false;
+  record.count++;
+  return true;
+}
+
+function getClientIp(c: any): string {
+  return c.req.header('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
 }
 
 // ─── GOOGLE MAPS ROUTES (Bounty #1) ─────────────────────
@@ -127,7 +144,11 @@ serviceRouter.get('/run', async (c) => {
   const verification = await verifyPayment(payment, walletAddress, MAPS_PRICE_USDC);
   if (!verification.valid) return c.json({ error: 'Payment verification failed' }, 402);
 
-  checkProxyRateLimit(c);
+  const ip = getClientIp(c);
+  if (!checkProxyRateLimit(ip)) {
+    c.header('Retry-After', '60');
+    return c.json({ error: 'Proxy rate limit exceeded', retryAfter: 60 }, 429);
+  }
 
   const query = c.req.query('query');
   const location = c.req.query('location');
@@ -141,14 +162,14 @@ serviceRouter.get('/run', async (c) => {
   try {
     const { businesses, nextPageToken } = await scrapeGoogleMaps(query, location, limit, pageToken);
     const proxy = getProxy();
-    const ip = await getProxyIp();
+    const proxyIp = await getProxyIp();
 
     return c.json({
       businesses,
       totalFound: businesses.length,
       nextPageToken,
       meta: {
-        proxy: { ip, country: proxy.country, type: 'mobile' },
+        proxy: { ip: proxyIp, country: proxy.country, type: 'mobile' },
       },
       payment: {
         txHash: payment.txHash,
@@ -176,7 +197,11 @@ serviceRouter.get('/details', async (c) => {
   const verification = await verifyPayment(payment, walletAddress, MAPS_PRICE_USDC);
   if (!verification.valid) return c.json({ error: 'Payment verification failed' }, 402);
 
-  checkProxyRateLimit(c);
+  const ip = getClientIp(c);
+  if (!checkProxyRateLimit(ip)) {
+    c.header('Retry-After', '60');
+    return c.json({ error: 'Proxy rate limit exceeded', retryAfter: 60 }, 429);
+  }
 
   const placeId = c.req.query('placeId');
   if (!placeId) {
@@ -186,12 +211,12 @@ serviceRouter.get('/details', async (c) => {
   try {
     const business = await extractDetailedBusiness(placeId);
     const proxy = getProxy();
-    const ip = await getProxyIp();
+    const proxyIp = await getProxyIp();
 
     return c.json({
       business,
       meta: {
-        proxy: { ip, country: proxy.country, type: 'mobile' },
+        proxy: { ip: proxyIp, country: proxy.country, type: 'mobile' },
       },
       payment: {
         txHash: payment.txHash,
@@ -223,7 +248,11 @@ serviceRouter.get('/jobs', async (c) => {
   const verification = await verifyPayment(payment, walletAddress, price);
   if (!verification.valid) return c.json({ error: 'Payment verification failed' }, 402);
 
-  checkProxyRateLimit(c);
+  const ip = getClientIp(c);
+  if (!checkProxyRateLimit(ip)) {
+    c.header('Retry-After', '60');
+    return c.json({ error: 'Proxy rate limit exceeded', retryAfter: 60 }, 429);
+  }
 
   const query = c.req.query('query') || 'Software Engineer';
   const location = c.req.query('location') || 'United States';
@@ -240,13 +269,13 @@ serviceRouter.get('/jobs', async (c) => {
     }
 
     const proxy = getProxy();
-    const ip = await getProxyIp();
+    const proxyIp = await getProxyIp();
 
     return c.json({
       jobs,
       total: jobs.length,
       meta: {
-        proxy: { ip, country: proxy.country, type: 'mobile' },
+        proxy: { ip: proxyIp, country: proxy.country, type: 'mobile' },
       },
       payment: {
         txHash: payment.txHash,
@@ -276,7 +305,11 @@ serviceRouter.get('/reviews/search', async (c) => {
   const verification = await verifyPayment(payment, walletAddress, BUSINESS_PRICE_USDC);
   if (!verification.valid) return c.json({ error: 'Payment verification failed' }, 402);
 
-  checkProxyRateLimit(c);
+  const ip = getClientIp(c);
+  if (!checkProxyRateLimit(ip)) {
+    c.header('Retry-After', '60');
+    return c.json({ error: 'Proxy rate limit exceeded', retryAfter: 60 }, 429);
+  }
 
   const query = c.req.query('q');
   if (!query) return c.json({ error: 'Missing query parameter q' }, 400);
@@ -303,7 +336,11 @@ serviceRouter.get('/reviews/summary/:place_id', async (c) => {
   const verification = await verifyPayment(payment, walletAddress, REVIEWS_PRICE_USDC);
   if (!verification.valid) return c.json({ error: 'Payment verification failed' }, 402);
 
-  checkProxyRateLimit(c);
+  const ip = getClientIp(c);
+  if (!checkProxyRateLimit(ip)) {
+    c.header('Retry-After', '60');
+    return c.json({ error: 'Proxy rate limit exceeded', retryAfter: 60 }, 429);
+  }
 
   const placeId = c.req.param('place_id');
   try {
@@ -328,7 +365,11 @@ serviceRouter.get('/reviews/:place_id', async (c) => {
   const verification = await verifyPayment(payment, walletAddress, REVIEWS_PRICE_USDC);
   if (!verification.valid) return c.json({ error: 'Payment verification failed' }, 402);
 
-  checkProxyRateLimit(c);
+  const ip = getClientIp(c);
+  if (!checkProxyRateLimit(ip)) {
+    c.header('Retry-After', '60');
+    return c.json({ error: 'Proxy rate limit exceeded', retryAfter: 60 }, 429);
+  }
 
   const placeId = c.req.param('place_id');
   const sort = c.req.query('sort') || 'newest';
@@ -356,7 +397,11 @@ serviceRouter.get('/business/:place_id', async (c) => {
   const verification = await verifyPayment(payment, walletAddress, BUSINESS_PRICE_USDC);
   if (!verification.valid) return c.json({ error: 'Payment verification failed' }, 402);
 
-  checkProxyRateLimit(c);
+  const ip = getClientIp(c);
+  if (!checkProxyRateLimit(ip)) {
+    c.header('Retry-After', '60');
+    return c.json({ error: 'Proxy rate limit exceeded', retryAfter: 60 }, 429);
+  }
 
   const placeId = c.req.param('place_id');
   try {
@@ -831,6 +876,12 @@ serviceRouter.get('/predictions', async (c) => {
   const verification = await verifyPayment(payment, walletAddress, price);
   if (!verification.valid) return c.json({ error: 'Payment failed' }, 402);
 
+  const ip = getClientIp(c);
+  if (!checkProxyRateLimit(ip)) {
+    c.header('Retry-After', '60');
+    return c.json({ error: 'Proxy rate limit exceeded', retryAfter: 60 }, 429);
+  }
+
   const type = c.req.query('type') || 'signal';
   const market = c.req.query('market') || 'will-jesus-christ-return-before-2027';
   const topic = c.req.query('topic') || market;
@@ -841,7 +892,7 @@ serviceRouter.get('/predictions', async (c) => {
   const signals: SignalData = {};
 
   const fetchPromises: Promise<void>[] = [];
-  let ip = 'unknown';
+  let proxyIp = 'unknown';
 
   if (type === 'signal' || type === 'arbitrage' || type === 'trending') {
     fetchPromises.push((async () => { odds.polymarket = await getPolymarketOdds(market); })());
@@ -855,7 +906,7 @@ serviceRouter.get('/predictions', async (c) => {
     fetchPromises.push((async () => { sentiment.twitter = await scrapeTwitterSentiment(topic, country); })());
   }
 
-  fetchPromises.push((async () => { ip = await getProxyIp(); })());
+  fetchPromises.push((async () => { proxyIp = await getProxyIp(); })());
 
   await Promise.all(fetchPromises);
 
@@ -873,7 +924,7 @@ serviceRouter.get('/predictions', async (c) => {
     signals,
     meta: {
       proxy: {
-        ip,
+        ip: proxyIp,
         country: proxy.country,
         type: 'mobile',
       },
